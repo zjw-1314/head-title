@@ -1,7 +1,19 @@
 <template>
   <div class="login-container">
     <!-- 导航栏组件 -->
-    <van-nav-bar title="登录" class="page-nav-var" />
+    <van-nav-bar
+      title="登录"
+      class="page-nav-var">
+      <!--
+        Icon图标
+        slot为插槽，用于自定义内容
+        -->
+      <van-icon
+        slot="left"
+        name="arrow-left"
+        @click="$router.back()"
+      />
+    </van-nav-bar>
 
     <!-- 表单组件 -->
     <van-form ref="loginForm" @submit="onSubmit">
@@ -65,13 +77,13 @@
 // 按需导入请求模块接口
 import { login, sendSms } from '@/api/user'
 export default {
-  name: 'LoginPage',
+  name: 'Login',
   data () {
     return {
       // 用户表单输入
       user: {
         mobile: '13811111111', // 手机号
-        code: '' // 验证码
+        code: '246810' // 验证码
       },
       // 表单验证
       userFormRules: {
@@ -120,6 +132,9 @@ export default {
         // 把用户数据存储到Vuex容器中
         this.$store.commit('setUser', data.data)
         this.$toast.success('登录成功')
+
+        // 路由跳转
+        this.$router.push('/my')
       } catch (error) {
         if (error.response.status === 400) {
           this.$toast.fail('手机号或验证码错误')
